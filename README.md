@@ -8,7 +8,7 @@ this lab consists of three components [ network , database , webserver ]
 # Network Component
 inside network-setup you will have a simple blueprint that will create 2 networks over openstack [ private and public ]
 
-we using the following command to execute it on a cloudify manager:
+use the following command to execute it on a cloudify manager:
 
 ```
 cfy install openstack-network.yaml -b openstack-simple-service-network -i external_network_name=external_network
