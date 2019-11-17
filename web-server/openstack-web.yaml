@@ -200,3 +200,9 @@ node_templates:
     relationships:
     - type: cloudify.relationships.contained_in
       target: openstack
+
+capabilities:
+  web_ip:
+    value: { get_attribute: [floating_ip, floating_ip_address] }
+  web_port:
+    value: '5000'

@@ -3,7 +3,7 @@
 set -e
 
 TEMP_DIR="/tmp"
-PYTHON_FILE_SERVER_ROOT=${TEMP_DIR}/python-simple-http-webserver
+PYTHON_FILE_SERVER_ROOT=${TEMP_DIR}/python-simple-http-webserver/app
 PID_FILE="server.pid"
 
 PID=`cat ${PYTHON_FILE_SERVER_ROOT}/${PID_FILE}`

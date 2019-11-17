@@ -78,3 +78,10 @@ node_templates:
     relationships:
       - type: cloudify.relationships.depends_on
         target: database_setup
+
+outputs:
+  web_server_link:
+    value:
+      url: { concat: [ 'http://', { get_capability: [ get_attribute : [webserver_setup, deployment, id], web_ip ] }, ':',  { get_capability: [ get_attribute : [webserver_setup, deployment, id], web_port ] } ] }
+
+
