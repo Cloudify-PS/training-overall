@@ -1,0 +1,80 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://cloudify.co/spec/cloudify/5.0.0/types.yaml
+
+inputs:
+  external_network_name:
+    description: ID of the external network in OpenStack
+
+  network_setup_dep_name:
+    description: Name of network resources provisioning blueprint/deployment
+    default: openstack-simple-service-network
+
+  database_setup_dep_name:
+    description: Name of database server Provisioning blueprint/deployment
+    default: database_server_simple
+
+  web_server_dep_name:
+    description: Name of web server Provisioning blueprint/deployment
+    default: web_server_simple
+
+  database_user:
+    description: >
+      user for database to be created on postgres database
+    default: 'pools'
+
+  database_pass:
+    description: >
+      password for database to be created on postgres database
+    default: 'pool1234'
+
+node_templates:
+
+  network_setup:
+    type: cloudify.nodes.Component
+    properties:
+      resource_config:
+        blueprint:
+          id: { get_input: network_setup_dep_name }
+          blueprint_archive: resources/network-setup.zip
+          main_file_name: openstack-network.yaml
+        deployment:
+          id: { get_input: network_setup_dep_name }
+          inputs:
+            external_network_name: { get_input: external_network_name }
+
+  database_setup:
+    type: cloudify.nodes.Component
+    properties:
+      resource_config:
+        blueprint:
+          id: { get_input: database_setup_dep_name }
+          blueprint_archive: resources/database-setup.zip
+          main_file_name: openstack-database.yaml
+        deployment:
+          id: { get_input: database_setup_dep_name }
+          inputs:
+            network_deployment_name: { get_input: network_setup_dep_name }
+            database_user: { get_input: database_user }
+            database_pass: { get_input: database_pass }
+    relationships:
+      - type: cloudify.relationships.depends_on
+        target: network_setup
+
+  webserver_setup:
+    type: cloudify.nodes.Component
+    properties:
+      resource_config:
+        blueprint:
+          id: { get_input: web_server_dep_name }
+          blueprint_archive: resources/web_server-setup.zip
+          main_file_name: openstack-web.yaml
+        deployment:
+          id: { get_input: web_server_dep_name }
+          inputs:
+            network_deployment_name: { get_input: network_setup_dep_name }
+            database_server_deployment_name: { get_input: database_setup_dep_name }
+    relationships:
+      - type: cloudify.relationships.depends_on
+        target: database_setup
