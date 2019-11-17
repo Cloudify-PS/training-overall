@@ -43,7 +43,7 @@ and it will create deployments for all components mentioned above
 in order to execute it we use the following command :
 
 ```
-cfy install openstack-e2e.yaml -b e2e -i database_user=[username] -i database_pass=[password] -i external_network_name=external_network 
+cfy install openstack-e2e.yaml -b e2e -i database_user=[username] -i database_pass=[password] -i external_network_name=external_network -i network_deployment_name=openstack-simple-service-network -i database_server_deployment_name=database_server_simple -i web_server_dep_name=web_server_simple
 ```
 
 
