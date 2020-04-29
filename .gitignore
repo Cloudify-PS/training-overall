@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# PyCharm Files
+.idea/
+
+# Mac hidden files
+.DS_Store
